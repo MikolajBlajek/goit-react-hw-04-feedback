@@ -5,27 +5,22 @@ import { Section } from "./Section/Section";
 import { Noti } from "./Notifinction/Noti";
 
 export const App = () => {
-  const [state, setState] = useState({
+  const [feedback, setFeedback] = useState({
     good: 0,
     neutral: 0,
     bad: 0,
   });
 
   const handleButtonClick = (type) => {
-    setState((prevState) => ({
-      ...prevState,
-      [type]: prevState[type] + 1,
+    setFeedback((prevFeedback) => ({
+      ...prevFeedback,
+      [type]: prevFeedback[type] + 1,
     }));
   };
 
-  const countTotalFeedback = () => {
-    return state.good + state.neutral + state.bad;
-  };
+  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
 
-  const countPositiveFeedbackPercentage = () => {
-    const totalFeedback = countTotalFeedback();
-    return totalFeedback === 0 ? 0 : (state.good / totalFeedback) * 100;
-  };
+  const positiveFeedbackPercentage = totalFeedback === 0 ? 0 : (feedback.good / totalFeedback) * 100;
 
   return (
     <div
@@ -43,16 +38,16 @@ export const App = () => {
         <FeedbackOptions options={['good', 'neutral', 'bad']} handleButtonClick={handleButtonClick}/> 
       </Section>
       
-      {countTotalFeedback() === 0 ? (
+      {totalFeedback === 0 ? (
         <Noti message="There is no feedback" />
       ) : (
         <Section title="Statistics">
           <Statistic 
-            good={state.good}
-            neutral={state.neutral}
-            bad={state.bad}
-            total={countTotalFeedback()}
-            positivePercentage={countPositiveFeedbackPercentage()}
+            good={feedback.good}
+            neutral={feedback.neutral}
+            bad={feedback.bad}
+            total={totalFeedback}
+            positivePercentage={positiveFeedbackPercentage}
           />
         </Section>
       )}
